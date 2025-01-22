@@ -1,0 +1,1139 @@
+ARM GAS  C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s 			page 1
+
+
+   1              		.cpu cortex-m0plus
+   2              		.arch armv6s-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.file	"LCD_I2C.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "Core/Src/LCD_I2C.c"
+  18              		.section	.rodata.I2C_Scan.str1.4,"aMS",%progbits,1
+  19              		.align	2
+  20              	.LC4:
+  21 0000 30782530 		.ascii	"0x%02X\000"
+  21      325800
+  22 0007 00       		.align	2
+  23              	.LC6:
+  24 0008 2E00     		.ascii	".\000"
+  25 000a 0000     		.align	2
+  26              	.LC8:
+  27 000c 0D0A00   		.ascii	"\015\012\000"
+  28 000f 00       		.align	2
+  29              	.LC0:
+  30 0010 5363616E 		.ascii	"Scanning I2C bus...\015\012\000"
+  30      6E696E67 
+  30      20493243 
+  30      20627573 
+  30      2E2E2E0D 
+  31              		.section	.text.I2C_Scan,"ax",%progbits
+  32              		.align	1
+  33              		.global	I2C_Scan
+  34              		.syntax unified
+  35              		.code	16
+  36              		.thumb_func
+  38              	I2C_Scan:
+  39              	.LFB214:
+   1:Core/Src/LCD_I2C.c **** /*
+   2:Core/Src/LCD_I2C.c ****  * LCD_I2C.c
+   3:Core/Src/LCD_I2C.c ****  *
+   4:Core/Src/LCD_I2C.c ****  *  Created on: Oct 14, 2024
+   5:Core/Src/LCD_I2C.c ****  *      Author: jacoubi
+   6:Core/Src/LCD_I2C.c ****  */
+   7:Core/Src/LCD_I2C.c **** 
+   8:Core/Src/LCD_I2C.c **** #include "LCD_I2C.h"
+   9:Core/Src/LCD_I2C.c **** 
+  10:Core/Src/LCD_I2C.c **** extern I2C_HandleTypeDef hi2c1;
+  11:Core/Src/LCD_I2C.c **** extern UART_HandleTypeDef huart2;
+  12:Core/Src/LCD_I2C.c **** 
+  13:Core/Src/LCD_I2C.c **** void I2C_Scan() {
+  40              		.loc 1 13 17 view -0
+ARM GAS  C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s 			page 2
+
+
+  41              		.cfi_startproc
+  42              		@ args = 0, pretend = 0, frame = 88
+  43              		@ frame_needed = 0, uses_anonymous_args = 0
+  44 0000 30B5     		push	{r4, r5, lr}
+  45              	.LCFI0:
+  46              		.cfi_def_cfa_offset 12
+  47              		.cfi_offset 4, -12
+  48              		.cfi_offset 5, -8
+  49              		.cfi_offset 14, -4
+  50 0002 97B0     		sub	sp, sp, #92
+  51              	.LCFI1:
+  52              		.cfi_def_cfa_offset 104
+  14:Core/Src/LCD_I2C.c ****     char info[] = "Scanning I2C bus...\r\n";
+  53              		.loc 1 14 5 view .LVU1
+  54              		.loc 1 14 10 is_stmt 0 view .LVU2
+  55 0004 10AC     		add	r4, sp, #64
+  56 0006 214B     		ldr	r3, .L7
+  57 0008 2200     		movs	r2, r4
+  58 000a 23CB     		ldmia	r3!, {r0, r1, r5}
+  59 000c 23C2     		stmia	r2!, {r0, r1, r5}
+  60 000e 03CB     		ldmia	r3!, {r0, r1}
+  61 0010 03C2     		stmia	r2!, {r0, r1}
+  62 0012 1B88     		ldrh	r3, [r3]
+  63 0014 1380     		strh	r3, [r2]
+  15:Core/Src/LCD_I2C.c ****     HAL_UART_Transmit(&huart2, (uint8_t*)info, strlen(info), HAL_MAX_DELAY);
+  64              		.loc 1 15 5 is_stmt 1 view .LVU3
+  65              		.loc 1 15 48 is_stmt 0 view .LVU4
+  66 0016 2000     		movs	r0, r4
+  67 0018 FFF7FEFF 		bl	strlen
+  68              	.LVL0:
+  69              		.loc 1 15 5 discriminator 1 view .LVU5
+  70 001c 0123     		movs	r3, #1
+  71 001e 82B2     		uxth	r2, r0
+  72 0020 1B48     		ldr	r0, .L7+4
+  73 0022 5B42     		rsbs	r3, r3, #0
+  74 0024 2100     		movs	r1, r4
+  75 0026 FFF7FEFF 		bl	HAL_UART_Transmit
+  76              	.LVL1:
+  16:Core/Src/LCD_I2C.c **** 
+  17:Core/Src/LCD_I2C.c ****     HAL_StatusTypeDef res;
+  77              		.loc 1 17 5 is_stmt 1 view .LVU6
+  18:Core/Src/LCD_I2C.c ****     for(uint16_t i = 0; i < 128; i++) {
+  78              		.loc 1 18 5 view .LVU7
+  79              	.LBB2:
+  80              		.loc 1 18 9 view .LVU8
+  81              		.loc 1 18 18 is_stmt 0 view .LVU9
+  82 002a 0024     		movs	r4, #0
+  83              		.loc 1 18 5 view .LVU10
+  84 002c 08E0     		b	.L2
+  85              	.LVL2:
+  86              	.L3:
+  19:Core/Src/LCD_I2C.c ****         res = HAL_I2C_IsDeviceReady(&hi2c1, i << 1, 1, 10);
+  20:Core/Src/LCD_I2C.c ****         if(res == HAL_OK) {
+  21:Core/Src/LCD_I2C.c ****             char msg[64];
+  22:Core/Src/LCD_I2C.c ****             snprintf(msg, sizeof(msg), "0x%02X", i);
+  23:Core/Src/LCD_I2C.c ****             HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+  24:Core/Src/LCD_I2C.c ****         } else {
+ARM GAS  C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s 			page 3
+
+
+  25:Core/Src/LCD_I2C.c ****             HAL_UART_Transmit(&huart2, (uint8_t*)".", 1, HAL_MAX_DELAY);
+  87              		.loc 1 25 13 is_stmt 1 view .LVU11
+  88 002e 0123     		movs	r3, #1
+  89 0030 1849     		ldr	r1, .L7+8
+  90 0032 1748     		ldr	r0, .L7+4
+  91              	.LVL3:
+  92              		.loc 1 25 13 is_stmt 0 view .LVU12
+  93 0034 5B42     		rsbs	r3, r3, #0
+  94 0036 0122     		movs	r2, #1
+  95 0038 FFF7FEFF 		bl	HAL_UART_Transmit
+  96              	.LVL4:
+  97              	.L4:
+  18:Core/Src/LCD_I2C.c ****     for(uint16_t i = 0; i < 128; i++) {
+  98              		.loc 1 18 35 is_stmt 1 discriminator 2 view .LVU13
+  99 003c 0134     		adds	r4, r4, #1
+ 100              	.LVL5:
+  18:Core/Src/LCD_I2C.c ****     for(uint16_t i = 0; i < 128; i++) {
+ 101              		.loc 1 18 35 is_stmt 0 discriminator 2 view .LVU14
+ 102 003e A4B2     		uxth	r4, r4
+ 103              	.LVL6:
+ 104              	.L2:
+  18:Core/Src/LCD_I2C.c ****     for(uint16_t i = 0; i < 128; i++) {
+ 105              		.loc 1 18 27 is_stmt 1 discriminator 1 view .LVU15
+ 106 0040 7F2C     		cmp	r4, #127
+ 107 0042 19D8     		bhi	.L6
+  19:Core/Src/LCD_I2C.c ****         res = HAL_I2C_IsDeviceReady(&hi2c1, i << 1, 1, 10);
+ 108              		.loc 1 19 9 view .LVU16
+  19:Core/Src/LCD_I2C.c ****         res = HAL_I2C_IsDeviceReady(&hi2c1, i << 1, 1, 10);
+ 109              		.loc 1 19 15 is_stmt 0 view .LVU17
+ 110 0044 6100     		lsls	r1, r4, #1
+ 111 0046 89B2     		uxth	r1, r1
+ 112 0048 1348     		ldr	r0, .L7+12
+ 113 004a 0A23     		movs	r3, #10
+ 114 004c 0122     		movs	r2, #1
+ 115 004e FFF7FEFF 		bl	HAL_I2C_IsDeviceReady
+ 116              	.LVL7:
+  20:Core/Src/LCD_I2C.c ****             char msg[64];
+ 117              		.loc 1 20 9 is_stmt 1 view .LVU18
+  20:Core/Src/LCD_I2C.c ****             char msg[64];
+ 118              		.loc 1 20 11 is_stmt 0 view .LVU19
+ 119 0052 0028     		cmp	r0, #0
+ 120 0054 EBD1     		bne	.L3
+ 121              	.LBB3:
+  21:Core/Src/LCD_I2C.c ****             snprintf(msg, sizeof(msg), "0x%02X", i);
+ 122              		.loc 1 21 13 is_stmt 1 view .LVU20
+  22:Core/Src/LCD_I2C.c ****             HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+ 123              		.loc 1 22 13 view .LVU21
+ 124 0056 114A     		ldr	r2, .L7+16
+ 125 0058 2300     		movs	r3, r4
+ 126 005a 4021     		movs	r1, #64
+ 127 005c 6846     		mov	r0, sp
+ 128              	.LVL8:
+  22:Core/Src/LCD_I2C.c ****             HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+ 129              		.loc 1 22 13 is_stmt 0 view .LVU22
+ 130 005e FFF7FEFF 		bl	snprintf
+ 131              	.LVL9:
+  23:Core/Src/LCD_I2C.c ****         } else {
+ARM GAS  C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s 			page 4
+
+
+ 132              		.loc 1 23 13 is_stmt 1 view .LVU23
+  23:Core/Src/LCD_I2C.c ****         } else {
+ 133              		.loc 1 23 55 is_stmt 0 view .LVU24
+ 134 0062 6846     		mov	r0, sp
+ 135 0064 FFF7FEFF 		bl	strlen
+ 136              	.LVL10:
+  23:Core/Src/LCD_I2C.c ****         } else {
+ 137              		.loc 1 23 13 discriminator 1 view .LVU25
+ 138 0068 0123     		movs	r3, #1
+ 139 006a 82B2     		uxth	r2, r0
+ 140 006c 0848     		ldr	r0, .L7+4
+ 141 006e 5B42     		rsbs	r3, r3, #0
+ 142 0070 6946     		mov	r1, sp
+ 143 0072 FFF7FEFF 		bl	HAL_UART_Transmit
+ 144              	.LVL11:
+ 145              	.LBE3:
+ 146 0076 E1E7     		b	.L4
+ 147              	.LVL12:
+ 148              	.L6:
+  23:Core/Src/LCD_I2C.c ****         } else {
+ 149              		.loc 1 23 13 discriminator 1 view .LVU26
+ 150              	.LBE2:
+  26:Core/Src/LCD_I2C.c ****         }
+  27:Core/Src/LCD_I2C.c ****     }
+  28:Core/Src/LCD_I2C.c **** 
+  29:Core/Src/LCD_I2C.c ****     HAL_UART_Transmit(&huart2, (uint8_t*)"\r\n", 2, HAL_MAX_DELAY);
+ 151              		.loc 1 29 5 is_stmt 1 view .LVU27
+ 152 0078 0123     		movs	r3, #1
+ 153 007a 0949     		ldr	r1, .L7+20
+ 154 007c 0448     		ldr	r0, .L7+4
+ 155 007e 5B42     		rsbs	r3, r3, #0
+ 156 0080 0222     		movs	r2, #2
+ 157 0082 FFF7FEFF 		bl	HAL_UART_Transmit
+ 158              	.LVL13:
+  30:Core/Src/LCD_I2C.c **** }
+ 159              		.loc 1 30 1 is_stmt 0 view .LVU28
+ 160 0086 17B0     		add	sp, sp, #92
+ 161              		@ sp needed
+ 162              	.LVL14:
+ 163              		.loc 1 30 1 view .LVU29
+ 164 0088 30BD     		pop	{r4, r5, pc}
+ 165              	.L8:
+ 166 008a C046     		.align	2
+ 167              	.L7:
+ 168 008c 10000000 		.word	.LC0
+ 169 0090 00000000 		.word	huart2
+ 170 0094 08000000 		.word	.LC6
+ 171 0098 00000000 		.word	hi2c1
+ 172 009c 00000000 		.word	.LC4
+ 173 00a0 0C000000 		.word	.LC8
+ 174              		.cfi_endproc
+ 175              	.LFE214:
+ 177              		.section	.text.LCD_SendInternal,"ax",%progbits
+ 178              		.align	1
+ 179              		.global	LCD_SendInternal
+ 180              		.syntax unified
+ 181              		.code	16
+ARM GAS  C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s 			page 5
+
+
+ 182              		.thumb_func
+ 184              	LCD_SendInternal:
+ 185              	.LVL15:
+ 186              	.LFB215:
+  31:Core/Src/LCD_I2C.c **** 
+  32:Core/Src/LCD_I2C.c **** HAL_StatusTypeDef LCD_SendInternal(uint8_t lcd_addr, uint8_t data, uint8_t flags) {
+ 187              		.loc 1 32 83 is_stmt 1 view -0
+ 188              		.cfi_startproc
+ 189              		@ args = 0, pretend = 0, frame = 8
+ 190              		@ frame_needed = 0, uses_anonymous_args = 0
+ 191              		.loc 1 32 83 is_stmt 0 view .LVU31
+ 192 0000 70B5     		push	{r4, r5, r6, lr}
+ 193              	.LCFI2:
+ 194              		.cfi_def_cfa_offset 16
+ 195              		.cfi_offset 4, -16
+ 196              		.cfi_offset 5, -12
+ 197              		.cfi_offset 6, -8
+ 198              		.cfi_offset 14, -4
+ 199 0002 84B0     		sub	sp, sp, #16
+ 200              	.LCFI3:
+ 201              		.cfi_def_cfa_offset 32
+ 202 0004 0500     		movs	r5, r0
+ 203 0006 0C00     		movs	r4, r1
+ 204 0008 1600     		movs	r6, r2
+ 205              	.LVL16:
+ 206              	.L10:
+  33:Core/Src/LCD_I2C.c ****     HAL_StatusTypeDef res;
+ 207              		.loc 1 33 5 is_stmt 1 view .LVU32
+  34:Core/Src/LCD_I2C.c ****     for(;;) {
+ 208              		.loc 1 34 5 view .LVU33
+  35:Core/Src/LCD_I2C.c ****         res = HAL_I2C_IsDeviceReady(&hi2c1, lcd_addr, 1, HAL_MAX_DELAY);
+ 209              		.loc 1 35 9 view .LVU34
+ 210              		.loc 1 35 15 is_stmt 0 view .LVU35
+ 211 000a 0123     		movs	r3, #1
+ 212 000c 1548     		ldr	r0, .L11
+ 213 000e 5B42     		rsbs	r3, r3, #0
+ 214 0010 0122     		movs	r2, #1
+ 215 0012 2900     		movs	r1, r5
+ 216 0014 FFF7FEFF 		bl	HAL_I2C_IsDeviceReady
+ 217              	.LVL17:
+  36:Core/Src/LCD_I2C.c ****         if(res == HAL_OK)
+ 218              		.loc 1 36 9 is_stmt 1 view .LVU36
+ 219              		.loc 1 36 11 is_stmt 0 view .LVU37
+ 220 0018 0028     		cmp	r0, #0
+ 221 001a F6D1     		bne	.L10
+  37:Core/Src/LCD_I2C.c ****             break;
+  38:Core/Src/LCD_I2C.c ****     }
+  39:Core/Src/LCD_I2C.c **** 
+  40:Core/Src/LCD_I2C.c ****     uint8_t up = data & 0xF0;
+ 222              		.loc 1 40 5 is_stmt 1 view .LVU38
+ 223              		.loc 1 40 13 is_stmt 0 view .LVU39
+ 224 001c 0F23     		movs	r3, #15
+ 225 001e 2200     		movs	r2, r4
+ 226 0020 9A43     		bics	r2, r3
+ 227 0022 1300     		movs	r3, r2
+ 228              	.LVL18:
+  41:Core/Src/LCD_I2C.c ****     uint8_t lo = (data << 4) & 0xF0;
+ARM GAS  C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s 			page 6
+
+
+ 229              		.loc 1 41 5 is_stmt 1 view .LVU40
+ 230              		.loc 1 41 13 is_stmt 0 view .LVU41
+ 231 0024 2401     		lsls	r4, r4, #4
+ 232              	.LVL19:
+ 233              		.loc 1 41 13 view .LVU42
+ 234 0026 E4B2     		uxtb	r4, r4
+ 235              	.LVL20:
+  42:Core/Src/LCD_I2C.c **** 
+  43:Core/Src/LCD_I2C.c ****     uint8_t data_arr[4];
+ 236              		.loc 1 43 5 is_stmt 1 view .LVU43
+  44:Core/Src/LCD_I2C.c ****     data_arr[0] = up|flags|BACKLIGHT|PIN_EN;
+ 237              		.loc 1 44 5 view .LVU44
+ 238              		.loc 1 44 17 is_stmt 0 view .LVU45
+ 239 0028 3343     		orrs	r3, r6
+ 240              	.LVL21:
+ 241              		.loc 1 44 17 view .LVU46
+ 242 002a 03AA     		add	r2, sp, #12
+ 243              	.LVL22:
+ 244              		.loc 1 44 17 view .LVU47
+ 245 002c 0C21     		movs	r1, #12
+ 246 002e 1800     		movs	r0, r3
+ 247              	.LVL23:
+ 248              		.loc 1 44 17 view .LVU48
+ 249 0030 0843     		orrs	r0, r1
+ 250 0032 1070     		strb	r0, [r2]
+  45:Core/Src/LCD_I2C.c ****     data_arr[1] = up|flags|BACKLIGHT;
+ 251              		.loc 1 45 5 is_stmt 1 view .LVU49
+ 252              		.loc 1 45 17 is_stmt 0 view .LVU50
+ 253 0034 0820     		movs	r0, #8
+ 254 0036 0343     		orrs	r3, r0
+ 255 0038 5370     		strb	r3, [r2, #1]
+  46:Core/Src/LCD_I2C.c ****     data_arr[2] = lo|flags|BACKLIGHT|PIN_EN;
+ 256              		.loc 1 46 5 is_stmt 1 view .LVU51
+ 257              		.loc 1 46 17 is_stmt 0 view .LVU52
+ 258 003a 3443     		orrs	r4, r6
+ 259              	.LVL24:
+ 260              		.loc 1 46 17 view .LVU53
+ 261 003c 2143     		orrs	r1, r4
+ 262 003e 9170     		strb	r1, [r2, #2]
+  47:Core/Src/LCD_I2C.c ****     data_arr[3] = lo|flags|BACKLIGHT;
+ 263              		.loc 1 47 5 is_stmt 1 view .LVU54
+ 264              		.loc 1 47 17 is_stmt 0 view .LVU55
+ 265 0040 0443     		orrs	r4, r0
+ 266 0042 D470     		strb	r4, [r2, #3]
+  48:Core/Src/LCD_I2C.c **** 
+  49:Core/Src/LCD_I2C.c ****     res = HAL_I2C_Master_Transmit(&hi2c1, lcd_addr, data_arr, sizeof(data_arr), HAL_MAX_DELAY);
+ 267              		.loc 1 49 5 is_stmt 1 view .LVU56
+ 268              		.loc 1 49 11 is_stmt 0 view .LVU57
+ 269 0044 0748     		ldr	r0, .L11
+ 270 0046 0123     		movs	r3, #1
+ 271 0048 5B42     		rsbs	r3, r3, #0
+ 272 004a 0093     		str	r3, [sp]
+ 273 004c 0533     		adds	r3, r3, #5
+ 274 004e 2900     		movs	r1, r5
+ 275 0050 FFF7FEFF 		bl	HAL_I2C_Master_Transmit
+ 276              	.LVL25:
+ 277 0054 0400     		movs	r4, r0
+ARM GAS  C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s 			page 7
+
+
+ 278              	.LVL26:
+  50:Core/Src/LCD_I2C.c ****     HAL_Delay(LCD_DELAY_MS);
+ 279              		.loc 1 50 5 is_stmt 1 view .LVU58
+ 280 0056 0520     		movs	r0, #5
+ 281 0058 FFF7FEFF 		bl	HAL_Delay
+ 282              	.LVL27:
+  51:Core/Src/LCD_I2C.c ****     return res;
+ 283              		.loc 1 51 5 view .LVU59
+  52:Core/Src/LCD_I2C.c **** }
+ 284              		.loc 1 52 1 is_stmt 0 view .LVU60
+ 285 005c 2000     		movs	r0, r4
+ 286 005e 04B0     		add	sp, sp, #16
+ 287              		@ sp needed
+ 288              	.LVL28:
+ 289              	.LVL29:
+ 290              	.LVL30:
+ 291              		.loc 1 52 1 view .LVU61
+ 292 0060 70BD     		pop	{r4, r5, r6, pc}
+ 293              	.L12:
+ 294 0062 C046     		.align	2
+ 295              	.L11:
+ 296 0064 00000000 		.word	hi2c1
+ 297              		.cfi_endproc
+ 298              	.LFE215:
+ 300              		.section	.text.LCD_SendCommand,"ax",%progbits
+ 301              		.align	1
+ 302              		.global	LCD_SendCommand
+ 303              		.syntax unified
+ 304              		.code	16
+ 305              		.thumb_func
+ 307              	LCD_SendCommand:
+ 308              	.LVL31:
+ 309              	.LFB216:
+  53:Core/Src/LCD_I2C.c **** 
+  54:Core/Src/LCD_I2C.c **** void LCD_SendCommand(uint8_t cmd) {
+ 310              		.loc 1 54 35 is_stmt 1 view -0
+ 311              		.cfi_startproc
+ 312              		@ args = 0, pretend = 0, frame = 0
+ 313              		@ frame_needed = 0, uses_anonymous_args = 0
+ 314              		.loc 1 54 35 is_stmt 0 view .LVU63
+ 315 0000 10B5     		push	{r4, lr}
+ 316              	.LCFI4:
+ 317              		.cfi_def_cfa_offset 8
+ 318              		.cfi_offset 4, -8
+ 319              		.cfi_offset 14, -4
+ 320 0002 0100     		movs	r1, r0
+  55:Core/Src/LCD_I2C.c ****     LCD_SendInternal(LCD_ADDR, cmd, 0);
+ 321              		.loc 1 55 5 is_stmt 1 view .LVU64
+ 322 0004 034B     		ldr	r3, .L14
+ 323 0006 1B68     		ldr	r3, [r3]
+ 324 0008 5B00     		lsls	r3, r3, #1
+ 325 000a D8B2     		uxtb	r0, r3
+ 326              	.LVL32:
+ 327              		.loc 1 55 5 is_stmt 0 view .LVU65
+ 328 000c 0022     		movs	r2, #0
+ 329 000e FFF7FEFF 		bl	LCD_SendInternal
+ 330              	.LVL33:
+ARM GAS  C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s 			page 8
+
+
+  56:Core/Src/LCD_I2C.c **** }
+ 331              		.loc 1 56 1 view .LVU66
+ 332              		@ sp needed
+ 333 0012 10BD     		pop	{r4, pc}
+ 334              	.L15:
+ 335              		.align	2
+ 336              	.L14:
+ 337 0014 00000000 		.word	LCD_ADDR_CONFIG
+ 338              		.cfi_endproc
+ 339              	.LFE216:
+ 341              		.section	.text.LCD_SendData,"ax",%progbits
+ 342              		.align	1
+ 343              		.global	LCD_SendData
+ 344              		.syntax unified
+ 345              		.code	16
+ 346              		.thumb_func
+ 348              	LCD_SendData:
+ 349              	.LVL34:
+ 350              	.LFB217:
+  57:Core/Src/LCD_I2C.c **** 
+  58:Core/Src/LCD_I2C.c **** void LCD_SendData(uint8_t data) {
+ 351              		.loc 1 58 33 is_stmt 1 view -0
+ 352              		.cfi_startproc
+ 353              		@ args = 0, pretend = 0, frame = 0
+ 354              		@ frame_needed = 0, uses_anonymous_args = 0
+ 355              		.loc 1 58 33 is_stmt 0 view .LVU68
+ 356 0000 10B5     		push	{r4, lr}
+ 357              	.LCFI5:
+ 358              		.cfi_def_cfa_offset 8
+ 359              		.cfi_offset 4, -8
+ 360              		.cfi_offset 14, -4
+ 361 0002 0100     		movs	r1, r0
+  59:Core/Src/LCD_I2C.c ****     LCD_SendInternal(LCD_ADDR, data, PIN_RS);
+ 362              		.loc 1 59 5 is_stmt 1 view .LVU69
+ 363 0004 034B     		ldr	r3, .L17
+ 364 0006 1B68     		ldr	r3, [r3]
+ 365 0008 5B00     		lsls	r3, r3, #1
+ 366 000a D8B2     		uxtb	r0, r3
+ 367              	.LVL35:
+ 368              		.loc 1 59 5 is_stmt 0 view .LVU70
+ 369 000c 0122     		movs	r2, #1
+ 370 000e FFF7FEFF 		bl	LCD_SendInternal
+ 371              	.LVL36:
+  60:Core/Src/LCD_I2C.c **** }
+ 372              		.loc 1 60 1 view .LVU71
+ 373              		@ sp needed
+ 374 0012 10BD     		pop	{r4, pc}
+ 375              	.L18:
+ 376              		.align	2
+ 377              	.L17:
+ 378 0014 00000000 		.word	LCD_ADDR_CONFIG
+ 379              		.cfi_endproc
+ 380              	.LFE217:
+ 382              		.section	.text.LCD_Init,"ax",%progbits
+ 383              		.align	1
+ 384              		.global	LCD_Init
+ 385              		.syntax unified
+ARM GAS  C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s 			page 9
+
+
+ 386              		.code	16
+ 387              		.thumb_func
+ 389              	LCD_Init:
+ 390              	.LFB218:
+  61:Core/Src/LCD_I2C.c **** 
+  62:Core/Src/LCD_I2C.c **** void LCD_Init() {
+ 391              		.loc 1 62 17 is_stmt 1 view -0
+ 392              		.cfi_startproc
+ 393              		@ args = 0, pretend = 0, frame = 0
+ 394              		@ frame_needed = 0, uses_anonymous_args = 0
+ 395 0000 10B5     		push	{r4, lr}
+ 396              	.LCFI6:
+ 397              		.cfi_def_cfa_offset 8
+ 398              		.cfi_offset 4, -8
+ 399              		.cfi_offset 14, -4
+  63:Core/Src/LCD_I2C.c ****     // 4-bit mode, 2 lines, 5x7 format
+  64:Core/Src/LCD_I2C.c ****     LCD_SendCommand(0b00110000);
+ 400              		.loc 1 64 5 view .LVU73
+ 401 0002 3020     		movs	r0, #48
+ 402 0004 FFF7FEFF 		bl	LCD_SendCommand
+ 403              	.LVL37:
+  65:Core/Src/LCD_I2C.c ****     // display & cursor home (keep this!)
+  66:Core/Src/LCD_I2C.c ****     LCD_SendCommand(0b00000010);
+ 404              		.loc 1 66 5 view .LVU74
+ 405 0008 0220     		movs	r0, #2
+ 406 000a FFF7FEFF 		bl	LCD_SendCommand
+ 407              	.LVL38:
+  67:Core/Src/LCD_I2C.c ****     // display on, right shift, underline off, blink off
+  68:Core/Src/LCD_I2C.c ****     LCD_SendCommand(0b00001100);
+ 408              		.loc 1 68 5 view .LVU75
+ 409 000e 0C20     		movs	r0, #12
+ 410 0010 FFF7FEFF 		bl	LCD_SendCommand
+ 411              	.LVL39:
+  69:Core/Src/LCD_I2C.c ****     // clear display (optional here)
+  70:Core/Src/LCD_I2C.c ****     LCD_SendCommand(0b00000001);
+ 412              		.loc 1 70 5 view .LVU76
+ 413 0014 0120     		movs	r0, #1
+ 414 0016 FFF7FEFF 		bl	LCD_SendCommand
+ 415              	.LVL40:
+  71:Core/Src/LCD_I2C.c **** }
+ 416              		.loc 1 71 1 is_stmt 0 view .LVU77
+ 417              		@ sp needed
+ 418 001a 10BD     		pop	{r4, pc}
+ 419              		.cfi_endproc
+ 420              	.LFE218:
+ 422              		.section	.text.LCD_SendString,"ax",%progbits
+ 423              		.align	1
+ 424              		.global	LCD_SendString
+ 425              		.syntax unified
+ 426              		.code	16
+ 427              		.thumb_func
+ 429              	LCD_SendString:
+ 430              	.LVL41:
+ 431              	.LFB219:
+  72:Core/Src/LCD_I2C.c **** 
+  73:Core/Src/LCD_I2C.c **** void LCD_SendString(char *str) {
+ 432              		.loc 1 73 32 is_stmt 1 view -0
+ARM GAS  C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s 			page 10
+
+
+ 433              		.cfi_startproc
+ 434              		@ args = 0, pretend = 0, frame = 0
+ 435              		@ frame_needed = 0, uses_anonymous_args = 0
+ 436              		.loc 1 73 32 is_stmt 0 view .LVU79
+ 437 0000 10B5     		push	{r4, lr}
+ 438              	.LCFI7:
+ 439              		.cfi_def_cfa_offset 8
+ 440              		.cfi_offset 4, -8
+ 441              		.cfi_offset 14, -4
+ 442 0002 0400     		movs	r4, r0
+  74:Core/Src/LCD_I2C.c **** 	
+  75:Core/Src/LCD_I2C.c **** 	while(*str) {
+ 443              		.loc 1 75 2 is_stmt 1 view .LVU80
+ 444              		.loc 1 75 7 is_stmt 0 view .LVU81
+ 445 0004 02E0     		b	.L21
+ 446              	.LVL42:
+ 447              	.L22:
+  76:Core/Src/LCD_I2C.c ****         LCD_SendData((uint8_t)(*str));
+ 448              		.loc 1 76 9 is_stmt 1 view .LVU82
+ 449 0006 FFF7FEFF 		bl	LCD_SendData
+ 450              	.LVL43:
+  77:Core/Src/LCD_I2C.c ****         str++;
+ 451              		.loc 1 77 9 view .LVU83
+ 452              		.loc 1 77 12 is_stmt 0 view .LVU84
+ 453 000a 0134     		adds	r4, r4, #1
+ 454              	.LVL44:
+ 455              	.L21:
+  75:Core/Src/LCD_I2C.c ****         LCD_SendData((uint8_t)(*str));
+ 456              		.loc 1 75 8 is_stmt 1 view .LVU85
+ 457 000c 2078     		ldrb	r0, [r4]
+ 458 000e 0028     		cmp	r0, #0
+ 459 0010 F9D1     		bne	.L22
+  78:Core/Src/LCD_I2C.c ****     }
+  79:Core/Src/LCD_I2C.c **** }
+ 460              		.loc 1 79 1 is_stmt 0 view .LVU86
+ 461              		@ sp needed
+ 462              	.LVL45:
+ 463              		.loc 1 79 1 view .LVU87
+ 464 0012 10BD     		pop	{r4, pc}
+ 465              		.cfi_endproc
+ 466              	.LFE219:
+ 468              		.section	.text.init,"ax",%progbits
+ 469              		.align	1
+ 470              		.global	init
+ 471              		.syntax unified
+ 472              		.code	16
+ 473              		.thumb_func
+ 475              	init:
+ 476              	.LFB220:
+  80:Core/Src/LCD_I2C.c **** 
+  81:Core/Src/LCD_I2C.c **** void init() {
+ 477              		.loc 1 81 13 is_stmt 1 view -0
+ 478              		.cfi_startproc
+ 479              		@ args = 0, pretend = 0, frame = 0
+ 480              		@ frame_needed = 0, uses_anonymous_args = 0
+ 481 0000 10B5     		push	{r4, lr}
+ 482              	.LCFI8:
+ARM GAS  C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s 			page 11
+
+
+ 483              		.cfi_def_cfa_offset 8
+ 484              		.cfi_offset 4, -8
+ 485              		.cfi_offset 14, -4
+  82:Core/Src/LCD_I2C.c ****     I2C_Scan();
+ 486              		.loc 1 82 5 view .LVU89
+ 487 0002 FFF7FEFF 		bl	I2C_Scan
+ 488              	.LVL46:
+  83:Core/Src/LCD_I2C.c ****     LCD_Init(LCD_ADDR);
+ 489              		.loc 1 83 5 view .LVU90
+ 490 0006 034B     		ldr	r3, .L24
+ 491 0008 1868     		ldr	r0, [r3]
+ 492 000a 4000     		lsls	r0, r0, #1
+ 493 000c FFF7FEFF 		bl	LCD_Init
+ 494              	.LVL47:
+  84:Core/Src/LCD_I2C.c **** }
+ 495              		.loc 1 84 1 is_stmt 0 view .LVU91
+ 496              		@ sp needed
+ 497 0010 10BD     		pop	{r4, pc}
+ 498              	.L25:
+ 499 0012 C046     		.align	2
+ 500              	.L24:
+ 501 0014 00000000 		.word	LCD_ADDR_CONFIG
+ 502              		.cfi_endproc
+ 503              	.LFE220:
+ 505              		.section	.text.LCD_SetCursor,"ax",%progbits
+ 506              		.align	1
+ 507              		.global	LCD_SetCursor
+ 508              		.syntax unified
+ 509              		.code	16
+ 510              		.thumb_func
+ 512              	LCD_SetCursor:
+ 513              	.LVL48:
+ 514              	.LFB221:
+  85:Core/Src/LCD_I2C.c **** 
+  86:Core/Src/LCD_I2C.c **** void LCD_SetCursor(uint8_t row, uint8_t column) {
+ 515              		.loc 1 86 49 is_stmt 1 view -0
+ 516              		.cfi_startproc
+ 517              		@ args = 0, pretend = 0, frame = 0
+ 518              		@ frame_needed = 0, uses_anonymous_args = 0
+ 519              		.loc 1 86 49 is_stmt 0 view .LVU93
+ 520 0000 10B5     		push	{r4, lr}
+ 521              	.LCFI9:
+ 522              		.cfi_def_cfa_offset 8
+ 523              		.cfi_offset 4, -8
+ 524              		.cfi_offset 14, -4
+  87:Core/Src/LCD_I2C.c ****     uint8_t address;
+ 525              		.loc 1 87 5 is_stmt 1 view .LVU94
+  88:Core/Src/LCD_I2C.c **** 
+  89:Core/Src/LCD_I2C.c ****     // Calculate the address depending on the row (row 0 or row 1 for a 16x2 display)
+  90:Core/Src/LCD_I2C.c ****     switch (row) {
+ 526              		.loc 1 90 5 view .LVU95
+ 527 0002 0128     		cmp	r0, #1
+ 528 0004 06D0     		beq	.L28
+ 529              	.LVL49:
+ 530              	.L27:
+  91:Core/Src/LCD_I2C.c ****         case 0:
+  92:Core/Src/LCD_I2C.c ****             address = 0x00 + column;  // First row address
+ARM GAS  C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s 			page 12
+
+
+  93:Core/Src/LCD_I2C.c ****             break;
+  94:Core/Src/LCD_I2C.c ****         case 1:
+  95:Core/Src/LCD_I2C.c ****             address = 0x40 + column;  // Second row address
+  96:Core/Src/LCD_I2C.c ****             break;
+  97:Core/Src/LCD_I2C.c ****         // Add more cases if you are using a 20x4 or similar display with more rows
+  98:Core/Src/LCD_I2C.c ****         default:
+  99:Core/Src/LCD_I2C.c ****             address = 0x00 + column;  // Default to the first row if the row is invalid
+ 100:Core/Src/LCD_I2C.c ****             break;
+ 101:Core/Src/LCD_I2C.c ****     }
+ 102:Core/Src/LCD_I2C.c **** 
+ 103:Core/Src/LCD_I2C.c ****     // Send the DDRAM address command (Set DDRAM address is 0x80 + address)
+ 104:Core/Src/LCD_I2C.c ****     LCD_SendCommand(0x80 | address);
+ 531              		.loc 1 104 5 view .LVU96
+ 532 0006 8020     		movs	r0, #128
+ 533              	.LVL50:
+ 534              		.loc 1 104 5 is_stmt 0 view .LVU97
+ 535 0008 4042     		rsbs	r0, r0, #0
+ 536 000a 0843     		orrs	r0, r1
+ 537 000c C0B2     		uxtb	r0, r0
+ 538 000e FFF7FEFF 		bl	LCD_SendCommand
+ 539              	.LVL51:
+ 105:Core/Src/LCD_I2C.c **** }
+ 540              		.loc 1 105 1 view .LVU98
+ 541              		@ sp needed
+ 542 0012 10BD     		pop	{r4, pc}
+ 543              	.LVL52:
+ 544              	.L28:
+  95:Core/Src/LCD_I2C.c ****             break;
+ 545              		.loc 1 95 13 is_stmt 1 view .LVU99
+  95:Core/Src/LCD_I2C.c ****             break;
+ 546              		.loc 1 95 21 is_stmt 0 view .LVU100
+ 547 0014 4031     		adds	r1, r1, #64
+ 548              	.LVL53:
+  95:Core/Src/LCD_I2C.c ****             break;
+ 549              		.loc 1 95 21 view .LVU101
+ 550 0016 C9B2     		uxtb	r1, r1
+ 551              	.LVL54:
+  96:Core/Src/LCD_I2C.c ****         // Add more cases if you are using a 20x4 or similar display with more rows
+ 552              		.loc 1 96 13 is_stmt 1 view .LVU102
+ 553 0018 F5E7     		b	.L27
+ 554              		.cfi_endproc
+ 555              	.LFE221:
+ 557              		.section	.text.LCD_Clear,"ax",%progbits
+ 558              		.align	1
+ 559              		.global	LCD_Clear
+ 560              		.syntax unified
+ 561              		.code	16
+ 562              		.thumb_func
+ 564              	LCD_Clear:
+ 565              	.LFB222:
+ 106:Core/Src/LCD_I2C.c **** 
+ 107:Core/Src/LCD_I2C.c **** void LCD_Clear() {
+ 566              		.loc 1 107 18 view -0
+ 567              		.cfi_startproc
+ 568              		@ args = 0, pretend = 0, frame = 0
+ 569              		@ frame_needed = 0, uses_anonymous_args = 0
+ 570 0000 10B5     		push	{r4, lr}
+ARM GAS  C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s 			page 13
+
+
+ 571              	.LCFI10:
+ 572              		.cfi_def_cfa_offset 8
+ 573              		.cfi_offset 4, -8
+ 574              		.cfi_offset 14, -4
+ 108:Core/Src/LCD_I2C.c ****     // Send the clear display command (0x01)
+ 109:Core/Src/LCD_I2C.c ****     LCD_SendCommand(0x01);
+ 575              		.loc 1 109 5 view .LVU104
+ 576 0002 0120     		movs	r0, #1
+ 577 0004 FFF7FEFF 		bl	LCD_SendCommand
+ 578              	.LVL55:
+ 110:Core/Src/LCD_I2C.c ****     HAL_Delay(2);  // Wait for 2 milliseconds
+ 579              		.loc 1 110 5 view .LVU105
+ 580 0008 0220     		movs	r0, #2
+ 581 000a FFF7FEFF 		bl	HAL_Delay
+ 582              	.LVL56:
+ 111:Core/Src/LCD_I2C.c **** }
+ 583              		.loc 1 111 1 is_stmt 0 view .LVU106
+ 584              		@ sp needed
+ 585 000e 10BD     		pop	{r4, pc}
+ 586              		.cfi_endproc
+ 587              	.LFE222:
+ 589              		.section	.rodata.LCD_ShiftText.str1.4,"aMS",%progbits,1
+ 590              		.align	2
+ 591              	.LC14:
+ 592 0000 20202573 		.ascii	"  %s  \000"
+ 592      202000
+ 593              		.global	__aeabi_idivmod
+ 594              		.section	.text.LCD_ShiftText,"ax",%progbits
+ 595              		.align	1
+ 596              		.global	LCD_ShiftText
+ 597              		.syntax unified
+ 598              		.code	16
+ 599              		.thumb_func
+ 601              	LCD_ShiftText:
+ 602              	.LVL57:
+ 603              	.LFB223:
+ 112:Core/Src/LCD_I2C.c **** 
+ 113:Core/Src/LCD_I2C.c **** void LCD_ShiftText(const char *text, char direction, int delayMs, int durationMs) {
+ 604              		.loc 1 113 83 is_stmt 1 view -0
+ 605              		.cfi_startproc
+ 606              		@ args = 0, pretend = 0, frame = 24
+ 607              		@ frame_needed = 0, uses_anonymous_args = 0
+ 608              		.loc 1 113 83 is_stmt 0 view .LVU108
+ 609 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 610              	.LCFI11:
+ 611              		.cfi_def_cfa_offset 20
+ 612              		.cfi_offset 4, -20
+ 613              		.cfi_offset 5, -16
+ 614              		.cfi_offset 6, -12
+ 615              		.cfi_offset 7, -8
+ 616              		.cfi_offset 14, -4
+ 617 0002 DE46     		mov	lr, fp
+ 618 0004 5746     		mov	r7, r10
+ 619 0006 4E46     		mov	r6, r9
+ 620 0008 4546     		mov	r5, r8
+ 621 000a E0B5     		push	{r5, r6, r7, lr}
+ 622              	.LCFI12:
+ARM GAS  C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s 			page 14
+
+
+ 623              		.cfi_def_cfa_offset 36
+ 624              		.cfi_offset 8, -36
+ 625              		.cfi_offset 9, -32
+ 626              		.cfi_offset 10, -28
+ 627              		.cfi_offset 11, -24
+ 628 000c 87B0     		sub	sp, sp, #28
+ 629              	.LCFI13:
+ 630              		.cfi_def_cfa_offset 64
+ 631 000e 0700     		movs	r7, r0
+ 632 0010 8846     		mov	r8, r1
+ 633 0012 9346     		mov	fp, r2
+ 634 0014 9A46     		mov	r10, r3
+ 114:Core/Src/LCD_I2C.c **** 
+ 115:Core/Src/LCD_I2C.c ****     char displayBuffer[20];  //16x2 LCD display + extra space for shift
+ 635              		.loc 1 115 5 is_stmt 1 view .LVU109
+ 116:Core/Src/LCD_I2C.c ****     snprintf(displayBuffer, sizeof(displayBuffer), "  %s  ", text);  // Append some space to avoid 
+ 636              		.loc 1 116 5 view .LVU110
+ 637 0016 2B4A     		ldr	r2, .L47
+ 638              	.LVL58:
+ 639              		.loc 1 116 5 is_stmt 0 view .LVU111
+ 640 0018 0300     		movs	r3, r0
+ 641              	.LVL59:
+ 642              		.loc 1 116 5 view .LVU112
+ 643 001a 1421     		movs	r1, #20
+ 644              	.LVL60:
+ 645              		.loc 1 116 5 view .LVU113
+ 646 001c 01A8     		add	r0, sp, #4
+ 647              	.LVL61:
+ 648              		.loc 1 116 5 view .LVU114
+ 649 001e FFF7FEFF 		bl	snprintf
+ 650              	.LVL62:
+ 117:Core/Src/LCD_I2C.c ****     int len = strlen(text)+1;
+ 651              		.loc 1 117 5 is_stmt 1 view .LVU115
+ 652              		.loc 1 117 15 is_stmt 0 view .LVU116
+ 653 0022 3800     		movs	r0, r7
+ 654 0024 FFF7FEFF 		bl	strlen
+ 655              	.LVL63:
+ 656              		.loc 1 117 27 discriminator 1 view .LVU117
+ 657 0028 461C     		adds	r6, r0, #1
+ 658              	.LVL64:
+ 118:Core/Src/LCD_I2C.c ****     
+ 119:Core/Src/LCD_I2C.c ****     // Add blank spaces at the end of the string
+ 120:Core/Src/LCD_I2C.c ****     
+ 121:Core/Src/LCD_I2C.c **** 
+ 122:Core/Src/LCD_I2C.c ****     uint32_t startTime = HAL_GetTick();  // Get the starting time in milliseconds
+ 659              		.loc 1 122 5 is_stmt 1 view .LVU118
+ 660              		.loc 1 122 26 is_stmt 0 view .LVU119
+ 661 002a FFF7FEFF 		bl	HAL_GetTick
+ 662              	.LVL65:
+ 663 002e 8146     		mov	r9, r0
+ 664              	.LVL66:
+ 123:Core/Src/LCD_I2C.c **** 
+ 124:Core/Src/LCD_I2C.c ****     for (int shift = 0; ; shift++) {
+ 665              		.loc 1 124 5 is_stmt 1 view .LVU120
+ 666              	.LBB4:
+ 667              		.loc 1 124 10 view .LVU121
+ 668              		.loc 1 124 14 is_stmt 0 view .LVU122
+ARM GAS  C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s 			page 15
+
+
+ 669 0030 0025     		movs	r5, #0
+ 670 0032 18E0     		b	.L40
+ 671              	.LVL67:
+ 672              	.L35:
+ 673              	.LBB5:
+ 674              	.LBB6:
+ 125:Core/Src/LCD_I2C.c ****         // Check if the elapsed time has exceeded the specified duration
+ 126:Core/Src/LCD_I2C.c ****         uint32_t elapsedTime = HAL_GetTick() - startTime;
+ 127:Core/Src/LCD_I2C.c ****         if (elapsedTime >= durationMs) {
+ 128:Core/Src/LCD_I2C.c ****             break;  // Stop shifting when the duration is exceeded
+ 129:Core/Src/LCD_I2C.c ****         }
+ 130:Core/Src/LCD_I2C.c **** 
+ 131:Core/Src/LCD_I2C.c ****         shift = shift % len;  // Normalize shift to avoid overflow
+ 132:Core/Src/LCD_I2C.c **** 
+ 133:Core/Src/LCD_I2C.c ****         // Clear the display before shifting
+ 134:Core/Src/LCD_I2C.c ****         LCD_Clear();
+ 135:Core/Src/LCD_I2C.c **** 
+ 136:Core/Src/LCD_I2C.c ****         // Perform the shifting based on direction
+ 137:Core/Src/LCD_I2C.c ****         if (direction == 'R' || direction == 'r') {  // Right shift
+ 138:Core/Src/LCD_I2C.c ****             for (int i = 0; i < 16; i++) {
+ 139:Core/Src/LCD_I2C.c ****                 displayBuffer[i] = text[(len - shift + i) % len];  // Adjust index based on shift
+ 675              		.loc 1 139 17 is_stmt 1 view .LVU123
+ 676              		.loc 1 139 46 is_stmt 0 view .LVU124
+ 677 0034 701B     		subs	r0, r6, r5
+ 678              		.loc 1 139 54 view .LVU125
+ 679 0036 0019     		adds	r0, r0, r4
+ 680              		.loc 1 139 59 view .LVU126
+ 681 0038 3100     		movs	r1, r6
+ 682 003a FFF7FEFF 		bl	__aeabi_idivmod
+ 683              	.LVL68:
+ 684              		.loc 1 139 40 view .LVU127
+ 685 003e 7A5C     		ldrb	r2, [r7, r1]
+ 686              		.loc 1 139 34 view .LVU128
+ 687 0040 01AB     		add	r3, sp, #4
+ 688 0042 1A55     		strb	r2, [r3, r4]
+ 138:Core/Src/LCD_I2C.c ****                 displayBuffer[i] = text[(len - shift + i) % len];  // Adjust index based on shift
+ 689              		.loc 1 138 38 is_stmt 1 discriminator 3 view .LVU129
+ 690 0044 0134     		adds	r4, r4, #1
+ 691              	.LVL69:
+ 692              	.L34:
+ 138:Core/Src/LCD_I2C.c ****                 displayBuffer[i] = text[(len - shift + i) % len];  // Adjust index based on shift
+ 693              		.loc 1 138 31 discriminator 1 view .LVU130
+ 694 0046 0F2C     		cmp	r4, #15
+ 695 0048 F4DD     		ble	.L35
+ 696              	.LVL70:
+ 697              	.L36:
+ 138:Core/Src/LCD_I2C.c ****                 displayBuffer[i] = text[(len - shift + i) % len];  // Adjust index based on shift
+ 698              		.loc 1 138 31 is_stmt 0 discriminator 1 view .LVU131
+ 699              	.LBE6:
+ 140:Core/Src/LCD_I2C.c ****             }
+ 141:Core/Src/LCD_I2C.c ****         } else if (direction == 'L' || direction == 'l') {  // Left shift
+ 142:Core/Src/LCD_I2C.c ****             for (int i = 0; i < 16; i++) {
+ 143:Core/Src/LCD_I2C.c ****                 displayBuffer[i] = text[(shift + i) % len];
+ 144:Core/Src/LCD_I2C.c ****             }
+ 145:Core/Src/LCD_I2C.c ****         }
+ 146:Core/Src/LCD_I2C.c **** 
+ 147:Core/Src/LCD_I2C.c ****         displayBuffer[16] = '\0';  // Null=terminate the display buffer
+ARM GAS  C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s 			page 16
+
+
+ 700              		.loc 1 147 9 is_stmt 1 view .LVU132
+ 701              		.loc 1 147 27 is_stmt 0 view .LVU133
+ 702 004a 01AC     		add	r4, sp, #4
+ 703 004c 0023     		movs	r3, #0
+ 704 004e 2374     		strb	r3, [r4, #16]
+ 148:Core/Src/LCD_I2C.c **** 
+ 149:Core/Src/LCD_I2C.c ****         // Set the cursor to the beginning of the first line
+ 150:Core/Src/LCD_I2C.c ****         LCD_SetCursor(0, 0);
+ 705              		.loc 1 150 9 is_stmt 1 view .LVU134
+ 706 0050 0021     		movs	r1, #0
+ 707 0052 0020     		movs	r0, #0
+ 708 0054 FFF7FEFF 		bl	LCD_SetCursor
+ 709              	.LVL71:
+ 151:Core/Src/LCD_I2C.c **** 
+ 152:Core/Src/LCD_I2C.c ****         // Write the shifted text to the LCD
+ 153:Core/Src/LCD_I2C.c ****         LCD_SendString(displayBuffer);
+ 710              		.loc 1 153 9 view .LVU135
+ 711 0058 2000     		movs	r0, r4
+ 712 005a FFF7FEFF 		bl	LCD_SendString
+ 713              	.LVL72:
+ 154:Core/Src/LCD_I2C.c **** 
+ 155:Core/Src/LCD_I2C.c ****         // Add a delay to control the speed of the shift
+ 156:Core/Src/LCD_I2C.c ****         HAL_Delay(delayMs);
+ 714              		.loc 1 156 9 view .LVU136
+ 715 005e 5846     		mov	r0, fp
+ 716 0060 FFF7FEFF 		bl	HAL_Delay
+ 717              	.LVL73:
+ 718              	.LBE5:
+ 124:Core/Src/LCD_I2C.c ****         // Check if the elapsed time has exceeded the specified duration
+ 719              		.loc 1 124 32 view .LVU137
+ 720 0064 0135     		adds	r5, r5, #1
+ 721              	.LVL74:
+ 124:Core/Src/LCD_I2C.c ****         // Check if the elapsed time has exceeded the specified duration
+ 722              		.loc 1 124 5 view .LVU138
+ 723              	.L40:
+ 724              	.LBB8:
+ 126:Core/Src/LCD_I2C.c ****         if (elapsedTime >= durationMs) {
+ 725              		.loc 1 126 9 view .LVU139
+ 126:Core/Src/LCD_I2C.c ****         if (elapsedTime >= durationMs) {
+ 726              		.loc 1 126 32 is_stmt 0 view .LVU140
+ 727 0066 FFF7FEFF 		bl	HAL_GetTick
+ 728              	.LVL75:
+ 126:Core/Src/LCD_I2C.c ****         if (elapsedTime >= durationMs) {
+ 729              		.loc 1 126 18 discriminator 1 view .LVU141
+ 730 006a 4B46     		mov	r3, r9
+ 731 006c C01A     		subs	r0, r0, r3
+ 732              	.LVL76:
+ 127:Core/Src/LCD_I2C.c ****             break;  // Stop shifting when the duration is exceeded
+ 733              		.loc 1 127 9 is_stmt 1 view .LVU142
+ 127:Core/Src/LCD_I2C.c ****             break;  // Stop shifting when the duration is exceeded
+ 734              		.loc 1 127 12 is_stmt 0 view .LVU143
+ 735 006e 8245     		cmp	r10, r0
+ 736 0070 21D9     		bls	.L30
+ 737              	.LVL77:
+ 131:Core/Src/LCD_I2C.c **** 
+ 738              		.loc 1 131 9 is_stmt 1 view .LVU144
+ 131:Core/Src/LCD_I2C.c **** 
+ARM GAS  C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s 			page 17
+
+
+ 739              		.loc 1 131 15 is_stmt 0 view .LVU145
+ 740 0072 3100     		movs	r1, r6
+ 741 0074 2800     		movs	r0, r5
+ 742              	.LVL78:
+ 131:Core/Src/LCD_I2C.c **** 
+ 743              		.loc 1 131 15 view .LVU146
+ 744 0076 FFF7FEFF 		bl	__aeabi_idivmod
+ 745              	.LVL79:
+ 131:Core/Src/LCD_I2C.c **** 
+ 746              		.loc 1 131 15 view .LVU147
+ 747 007a 0D00     		movs	r5, r1
+ 748              	.LVL80:
+ 134:Core/Src/LCD_I2C.c **** 
+ 749              		.loc 1 134 9 is_stmt 1 view .LVU148
+ 750 007c FFF7FEFF 		bl	LCD_Clear
+ 751              	.LVL81:
+ 137:Core/Src/LCD_I2C.c ****             for (int i = 0; i < 16; i++) {
+ 752              		.loc 1 137 9 view .LVU149
+ 137:Core/Src/LCD_I2C.c ****             for (int i = 0; i < 16; i++) {
+ 753              		.loc 1 137 12 is_stmt 0 view .LVU150
+ 754 0080 4346     		mov	r3, r8
+ 755 0082 522B     		cmp	r3, #82
+ 756 0084 07D0     		beq	.L41
+ 757              	.LVL82:
+ 137:Core/Src/LCD_I2C.c ****             for (int i = 0; i < 16; i++) {
+ 758              		.loc 1 137 30 discriminator 1 view .LVU151
+ 759 0086 722B     		cmp	r3, #114
+ 760 0088 07D0     		beq	.L46
+ 141:Core/Src/LCD_I2C.c ****             for (int i = 0; i < 16; i++) {
+ 761              		.loc 1 141 16 is_stmt 1 view .LVU152
+ 141:Core/Src/LCD_I2C.c ****             for (int i = 0; i < 16; i++) {
+ 762              		.loc 1 141 19 is_stmt 0 view .LVU153
+ 763 008a 4C2B     		cmp	r3, #76
+ 764 008c 07D0     		beq	.L43
+ 141:Core/Src/LCD_I2C.c ****             for (int i = 0; i < 16; i++) {
+ 765              		.loc 1 141 37 discriminator 1 view .LVU154
+ 766 008e 6C2B     		cmp	r3, #108
+ 767 0090 DBD1     		bne	.L36
+ 768 0092 0024     		movs	r4, #0
+ 769 0094 04E0     		b	.L38
+ 770              	.L41:
+ 771 0096 0024     		movs	r4, #0
+ 772 0098 D5E7     		b	.L34
+ 773              	.L46:
+ 774 009a 0024     		movs	r4, #0
+ 775 009c D3E7     		b	.L34
+ 776              	.L43:
+ 777 009e 0024     		movs	r4, #0
+ 778              	.LVL83:
+ 779              	.L38:
+ 780              	.LBB7:
+ 142:Core/Src/LCD_I2C.c ****                 displayBuffer[i] = text[(shift + i) % len];
+ 781              		.loc 1 142 31 is_stmt 1 discriminator 1 view .LVU155
+ 782 00a0 0F2C     		cmp	r4, #15
+ 783 00a2 D2DC     		bgt	.L36
+ 143:Core/Src/LCD_I2C.c ****             }
+ 784              		.loc 1 143 17 view .LVU156
+ARM GAS  C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s 			page 18
+
+
+ 143:Core/Src/LCD_I2C.c ****             }
+ 785              		.loc 1 143 48 is_stmt 0 view .LVU157
+ 786 00a4 6019     		adds	r0, r4, r5
+ 143:Core/Src/LCD_I2C.c ****             }
+ 787              		.loc 1 143 53 view .LVU158
+ 788 00a6 3100     		movs	r1, r6
+ 789 00a8 FFF7FEFF 		bl	__aeabi_idivmod
+ 790              	.LVL84:
+ 143:Core/Src/LCD_I2C.c ****             }
+ 791              		.loc 1 143 40 view .LVU159
+ 792 00ac 7A5C     		ldrb	r2, [r7, r1]
+ 143:Core/Src/LCD_I2C.c ****             }
+ 793              		.loc 1 143 34 view .LVU160
+ 794 00ae 01AB     		add	r3, sp, #4
+ 795 00b0 1A55     		strb	r2, [r3, r4]
+ 142:Core/Src/LCD_I2C.c ****                 displayBuffer[i] = text[(shift + i) % len];
+ 796              		.loc 1 142 38 is_stmt 1 discriminator 3 view .LVU161
+ 797 00b2 0134     		adds	r4, r4, #1
+ 798              	.LVL85:
+ 142:Core/Src/LCD_I2C.c ****                 displayBuffer[i] = text[(shift + i) % len];
+ 799              		.loc 1 142 38 is_stmt 0 discriminator 3 view .LVU162
+ 800 00b4 F4E7     		b	.L38
+ 801              	.LVL86:
+ 802              	.L30:
+ 142:Core/Src/LCD_I2C.c ****                 displayBuffer[i] = text[(shift + i) % len];
+ 803              		.loc 1 142 38 discriminator 3 view .LVU163
+ 804              	.LBE7:
+ 805              	.LBE8:
+ 806              	.LBE4:
+ 157:Core/Src/LCD_I2C.c ****     }
+ 158:Core/Src/LCD_I2C.c **** }
+ 807              		.loc 1 158 1 view .LVU164
+ 808 00b6 07B0     		add	sp, sp, #28
+ 809              		@ sp needed
+ 810              	.LVL87:
+ 811              	.LVL88:
+ 812              	.LVL89:
+ 813              	.LVL90:
+ 814              	.LVL91:
+ 815              	.LVL92:
+ 816              		.loc 1 158 1 view .LVU165
+ 817 00b8 F0BC     		pop	{r4, r5, r6, r7}
+ 818 00ba BB46     		mov	fp, r7
+ 819 00bc B246     		mov	r10, r6
+ 820 00be A946     		mov	r9, r5
+ 821 00c0 A046     		mov	r8, r4
+ 822 00c2 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 823              	.L48:
+ 824              		.align	2
+ 825              	.L47:
+ 826 00c4 00000000 		.word	.LC14
+ 827              		.cfi_endproc
+ 828              	.LFE223:
+ 830              		.text
+ 831              	.Letext0:
+ 832              		.file 2 "C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/13.2 Rel1/arm-none-eabi/include/ma
+ 833              		.file 3 "C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/13.2 Rel1/arm-none-eabi/include/sy
+ARM GAS  C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s 			page 19
+
+
+ 834              		.file 4 "Drivers/CMSIS/Device/ST/STM32C0xx/Include/stm32c031xx.h"
+ 835              		.file 5 "C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/13.2 Rel1/lib/gcc/arm-none-eabi/13
+ 836              		.file 6 "Drivers/STM32C0xx_HAL_Driver/Inc/stm32c0xx_hal_def.h"
+ 837              		.file 7 "Drivers/STM32C0xx_HAL_Driver/Inc/stm32c0xx_hal_dma.h"
+ 838              		.file 8 "Drivers/STM32C0xx_HAL_Driver/Inc/stm32c0xx_hal_i2c.h"
+ 839              		.file 9 "Drivers/STM32C0xx_HAL_Driver/Inc/stm32c0xx_hal_uart.h"
+ 840              		.file 10 "Core/Inc/LCD_I2C.h"
+ 841              		.file 11 "C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/13.2 Rel1/arm-none-eabi/include/s
+ 842              		.file 12 "Drivers/STM32C0xx_HAL_Driver/Inc/stm32c0xx_hal.h"
+ 843              		.file 13 "<built-in>"
+ARM GAS  C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s 			page 20
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 LCD_I2C.c
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:19     .rodata.I2C_Scan.str1.4:00000000 $d
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:32     .text.I2C_Scan:00000000 $t
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:38     .text.I2C_Scan:00000000 I2C_Scan
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:168    .text.I2C_Scan:0000008c $d
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:178    .text.LCD_SendInternal:00000000 $t
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:184    .text.LCD_SendInternal:00000000 LCD_SendInternal
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:296    .text.LCD_SendInternal:00000064 $d
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:301    .text.LCD_SendCommand:00000000 $t
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:307    .text.LCD_SendCommand:00000000 LCD_SendCommand
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:337    .text.LCD_SendCommand:00000014 $d
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:342    .text.LCD_SendData:00000000 $t
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:348    .text.LCD_SendData:00000000 LCD_SendData
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:378    .text.LCD_SendData:00000014 $d
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:383    .text.LCD_Init:00000000 $t
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:389    .text.LCD_Init:00000000 LCD_Init
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:423    .text.LCD_SendString:00000000 $t
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:429    .text.LCD_SendString:00000000 LCD_SendString
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:469    .text.init:00000000 $t
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:475    .text.init:00000000 init
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:501    .text.init:00000014 $d
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:506    .text.LCD_SetCursor:00000000 $t
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:512    .text.LCD_SetCursor:00000000 LCD_SetCursor
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:558    .text.LCD_Clear:00000000 $t
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:564    .text.LCD_Clear:00000000 LCD_Clear
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:590    .rodata.LCD_ShiftText.str1.4:00000000 $d
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:595    .text.LCD_ShiftText:00000000 $t
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:601    .text.LCD_ShiftText:00000000 LCD_ShiftText
+C:\Users\Yasi\AppData\Local\Temp\ccXjx8u7.s:826    .text.LCD_ShiftText:000000c4 $d
+
+UNDEFINED SYMBOLS
+strlen
+HAL_UART_Transmit
+HAL_I2C_IsDeviceReady
+snprintf
+huart2
+hi2c1
+HAL_I2C_Master_Transmit
+HAL_Delay
+LCD_ADDR_CONFIG
+__aeabi_idivmod
+HAL_GetTick
